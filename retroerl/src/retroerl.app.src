@@ -8,8 +8,10 @@
     stdlib
    ]},
   {env,[]},
-  {modules, []},
+  {modules, [
+   main_server
+  ]},
 
-  {licenses, ["Apache 2.0"]},
+  {licenses, ["MIT"]},
   {links, []}
  ]}.

@@ -26,10 +26,14 @@ start_link() ->
 %%                  type => worker(),       % optional
 %%                  modules => modules()}   % optional
 init([]) ->
+    % one_for_one, one_for_all, rest_for_one, simple_one_for_one; in seconds
     SupFlags = #{strategy => one_for_all,
                  intensity => 0,
                  period => 1},
-    ChildSpecs = [],
-    {ok, {SupFlags, ChildSpecs}}.
+    MainServer= #{
+      id      => main_server, % anything but a pid()
+      start   => {main_server, start_link, []}
+    },
+    {ok, {SupFlags, [MainServer]}}.
 
 %% internal functions
