@@ -9,7 +9,10 @@
    ]},
   {env,[]},
   {modules, [
-   main_server
+%    main_server,
+   wx_main
+%    ex_graphicsContext,
+%    ex_gl
   ]},
 
   {licenses, ["MIT"]},

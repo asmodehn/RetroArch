@@ -15,6 +15,7 @@ free(Ch) ->
   gen_server:cast(main_server, {free, Ch}).
 
 init(_Args) ->
+  ex_graphicsContext:start([]),
   {ok, channels()}.
 
 handle_call(alloc, _From, Chs) ->

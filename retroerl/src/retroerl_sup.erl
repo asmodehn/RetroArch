@@ -34,6 +34,10 @@ init([]) ->
       id      => main_server, % anything but a pid()
       start   => {main_server, start_link, []}
     },
-    {ok, {SupFlags, [MainServer]}}.
+    WxMain = #{
+        id      => wxmain, % anything but a pid()
+        start   => {wxmain, start_link, []}
+        },
+    {ok, {SupFlags, [WxMain]}}.
 
 %% internal functions
