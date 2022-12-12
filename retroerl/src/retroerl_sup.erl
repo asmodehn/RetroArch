@@ -34,9 +34,13 @@ init([]) ->
       id      => main_server, % anything but a pid()
       start   => {main_server, start_link, []}
     },
+
+%     The UI display is transient, as a use might want to close the window.
     WxMain = #{
         id      => wxmain, % anything but a pid()
-        start   => {wxmain, start_link, []}
+        start   => {wxmain, start_link, []},
+        restart => transient,
+        significant => false
         },
     {ok, {SupFlags, [WxMain]}}.
 

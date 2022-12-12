@@ -25,21 +25,7 @@ start_link(Debug) ->
     Status = wx_object:start_link(?MODULE, Debug, []),
     {ok, wx_object:get_pid(Status)}.
 
-% init(Config) ->
-%     wx:batch(fun() -> do_init(Config) end).
-
 init(Config) ->
-
-wx:new(Config),
-process_flag(trap_exit, true),
-
-% Frame = wxFrame:new(wx:null(),
-% ?wxID_ANY,
-% "Simple application",
-% [{size,{500,500}}]),
-% wxFrame:show(Frame),
-
-% {Frame, #state{frame=Frame}}.
 
     Wx = wx:new(Config),
 
@@ -47,10 +33,8 @@ process_flag(trap_exit, true),
 
     Frame = wxFrame:new(Wx, ?wxID_ANY, ?TITLE, [{size, ?SIZE }]),
 
-
-
-%     wxFrame:connect(Frame, size),
-%     wxFrame:connect(Frame, close_window).
+    wxFrame:connect(Frame, size),
+    wxFrame:connect(Frame, close_window),
 
     Panel = wxPanel:new(Frame, []),
 %     wxPanel:connect(Panel, paint, [callback]),
@@ -68,13 +52,18 @@ process_flag(trap_exit, true),
     {Frame, State}.
 
 
-% handle_event({wx, _, _, _, {wxSize, size, size, _}}, state = #{panel= panel}) ->
-%     wxPanel:setSize(panel, size),
-%     {noreply, state}.
-%
-%
-% handle_event({wx, _, _, _, {wxClose, close_window}}, state) ->
-%     {stop, normal, state}.
+%% Async Events are handled in handle_event as in handle_info
+handle_event(#wx{event = #wxSize{size = {W,H}}}, State = #state{panel= Panel}) ->
+    wxPanel:setSize(Panel, {W, H}),
+    {noreply, State};
+
+handle_event(#wx{event = #wxClose{type = close_window}}, State = #state{frame=Frame}) ->
+    wxFrame:destroy(Frame),
+    {stop, normal, State};
+
+handle_event(Ev,State) ->
+    io:format("~p handle_event callback ~p~n",[?MODULE, Ev]),
+    {noreply, State}.
 
 
 % handle_event({:wx, _, ref, _, {:wxCommand, :command_button_clicked, _, _, _}}, state) ->
@@ -109,11 +98,6 @@ handle_call(Msg, _From, State) ->
 handle_cast(Msg, State) ->
     io:format("~p handle_cast callback: ~p~n",[?MODULE, Msg]),
     {noreply,State}.
-
-%% Async Events are handled in handle_event as in handle_info
-handle_event(Ev,State) ->
-    io:format("~p handle_event callback ~p~n",[?MODULE, Ev]),
-    {noreply, State}.
 
 code_change(_, _, State) ->
     {stop, not_yet_implemented, State}.
