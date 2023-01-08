@@ -1,6 +1,17 @@
 # Archer
 
-**TODO: Add description**
+## How to run
+
+```
+iex -S mix
+```
+
+
+## Camera Test
+```
+mix test --including manual
+```
+
 
 ## Installation
 
