@@ -1,0 +1,20 @@
+{application, retroerl,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {retroerl_app, []}},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, [
+%    main_server,
+   wx_main
+%    ex_graphicsContext,
+%    ex_gl
+  ]},
+
+  {licenses, ["MIT"]},
+  {links, []}
+ ]}.
